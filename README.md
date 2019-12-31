@@ -1,6 +1,7 @@
 # Purdue Social Network
 TODO
 * Name?
+* Place python process in the root directory
 * Authentication
     * Email must only be @purdue.edu
     * Password check
