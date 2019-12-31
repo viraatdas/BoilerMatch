@@ -1,5 +1,6 @@
 # Purdue Social Network
 TODO
+* Name?
 * Authentication
     * Email must only be @purdue.edu
     * Password check
