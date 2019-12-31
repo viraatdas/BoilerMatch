@@ -1,0 +1,11 @@
+{
+  "name": "purdue_net",
+  "version": "1.0.0",
+  "description": "Purdue's Social Network",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
