@@ -11,10 +11,12 @@ class Register extends Component {
     password: "",
     password2: "",
     loading: false,
-    error: ""
+    error: "",
+    yearList: []
   };
 
   componentDidMount() {
+    // Token processing
     let token = localStorage.getItem("jwtToken");
     if (token) {
       console.log("token", token);
@@ -24,6 +26,14 @@ class Register extends Component {
         this.setState({ loggedIn: true });
       }
     }
+
+    // Calculate list of graduation years
+    let currYear = new Date().getFullYear();
+    let temp = [];
+    for (let year = currYear - 60; year < currYear + 11; year++) {
+      temp.push(year);
+    }
+    this.setState({ yearList: temp });
   }
 
   handleChange = name => event => {
@@ -101,6 +111,13 @@ class Register extends Component {
                 </small>
               </div>
               <div className="form-group">
+                <select className="form-control" id="gradYear">
+                  {this.state.yearList.map(year => (
+                    <option>{year}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
                 {/* <label>Password</label> */}
                 <input
                   type="password"
@@ -120,13 +137,6 @@ class Register extends Component {
                   placeholder="Confirm Password"
                   value={this.state.password2}
                   onChange={this.handleChange("password2")}
-                />
-                <input
-                  type="number"
-                  min="1970"
-                  max="2030"
-                  step="1"
-                  value="2019"
                 />
               </div>
               <div className="row">
