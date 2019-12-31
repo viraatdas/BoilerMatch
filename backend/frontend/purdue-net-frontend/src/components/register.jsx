@@ -78,10 +78,10 @@ class Register extends Component {
                   <input
                     type="text"
                     className="form-control"
-                    id="name"
+                    id="firstName"
                     placeholder="First Name"
-                    value={this.state.name}
-                    onChange={this.handleChange("name")}
+                    value={this.state.firstName}
+                    onChange={this.handleChange("firstName")}
                   />
                 </div>
                 <div className="col">
@@ -89,10 +89,10 @@ class Register extends Component {
                   <input
                     type="text"
                     className="form-control"
-                    id="name"
+                    id="lastName"
                     placeholder="Last Name"
-                    value={this.state.name}
-                    onChange={this.handleChange("name")}
+                    value={this.state.lastName}
+                    onChange={this.handleChange("lastName")}
                   />
                 </div>
               </div>
@@ -102,7 +102,7 @@ class Register extends Component {
                   type="email"
                   className="form-control"
                   id="email"
-                  placeholder="Enter your @purdue.edu email"
+                  placeholder="Enter your @purdue.edu or @alumni.purdue.edu email"
                   value={this.state.email}
                   onChange={this.handleChange("email")}
                 />
@@ -112,6 +112,9 @@ class Register extends Component {
               </div>
               <div className="form-group">
                 <select className="form-control" id="gradYear">
+                  <option selected disabled hidden>
+                    Graduation Year
+                  </option>
                   {this.state.yearList.map(year => (
                     <option>{year}</option>
                   ))}
