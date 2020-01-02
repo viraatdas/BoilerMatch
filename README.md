@@ -11,3 +11,5 @@ TODO
 * Interface
     * Send friend requests to people
     * accept friend requests
+
+### Currently being developed by @Automage and @viraatdas
