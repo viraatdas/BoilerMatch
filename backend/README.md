@@ -7,9 +7,8 @@ Built with Node.js.
 npm install
 ```
 2. Copy and setup variables in .env
-    - Copy and setup variables in `.env`
-	    * `$ cp .env.example .env`
-    - Then make any env changes you need
+    * `$ cp .env.example .env`
+    * Then make any env changes you need
 
 3. Intialize frontend (Refer [here](frontend/purdue-net-frontend) for more details)
 
