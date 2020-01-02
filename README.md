@@ -6,6 +6,7 @@ TODO
     * Email must only be @purdue.edu
       * Validation should be done in both the frontend and backend (frontend for speed, backend to ensure external api requests don't create accounts with non-purdue emails)
     * Password check
+    * Send confirmation email after user has created an account
 * Configure database
     * figure out a proper way to store friends
 * Interface
