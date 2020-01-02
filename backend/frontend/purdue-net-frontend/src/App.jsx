@@ -6,6 +6,7 @@ import { Redirect } from "react-router-dom";
 
 import Login from "./components/login.jsx";
 import Register from "./components/register.jsx";
+import Home from "./components/home.jsx";
 
 function App() {
   return (
@@ -18,8 +19,11 @@ function App() {
           <Route path="/register">
             <Register />
           </Route>
+          <Route path="/home">
+            <Home />
+          </Route>
           <Route path="/">
-            <Redirect to="/login" />
+            <Redirect to="/home" />
           </Route>
         </Switch>
       </Router>

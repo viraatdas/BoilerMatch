@@ -65,9 +65,10 @@ class Register extends Component {
   };
 
   render() {
-    // if (this.state.msg == "Success") {
-    //   return <Redirect to="/login" />;
-    // }
+    if (this.state.msg == "Success") {
+      return <Redirect to="/login" />;
+    }
+
     return (
       <React.Fragment>
         <div className="container-fluid">

@@ -45,9 +45,9 @@ class Login extends Component {
   };
 
   render() {
-    // if (this.state.loggedIn === true) {
-    //   return <Redirect to="/" />;
-    // }
+    if (this.state.loggedIn === true) {
+      return <Redirect to="/home" />;
+    }
 
     return (
       <React.Fragment>
