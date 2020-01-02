@@ -1,9 +1,19 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  name: {
+  firstName: {
     type: String,
     trim: true,
+    required: true
+  },
+  secondName: {
+    type: String,
+    trim: true,
+    required: true
+  },
+  graduationYear: {
+    type: Number,
+    default: 0,
     required: true
   },
   email: {
@@ -15,11 +25,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     select: false
-  },
-  points: {
-    type: Number,
-    default: 0,
-    required: true
   }
 });
 
