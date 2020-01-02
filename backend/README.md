@@ -6,12 +6,10 @@ Built with Node.js.
 ```
 npm install
 ```
-2.  Setup a .env file with the following template:
-```
-DATABASE_URL="database_url_here"
-PORT=8000
-SECRET=secret_key
-```
+2. Copy and setup variables in .env
+    * `$ cp .env.example .env`
+    * Then make any env changes you need
+
 3. Intialize frontend (Refer [here](frontend/purdue-net-frontend) for more details)
 
 ## Usage
