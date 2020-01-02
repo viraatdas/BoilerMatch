@@ -8,6 +8,7 @@ class Register extends Component {
     firstName: "",
     lastName: "",
     email: "",
+    gradYear: "Graduation Year",
     password: "",
     password2: "",
     loading: false,
@@ -41,6 +42,7 @@ class Register extends Component {
   };
 
   handleSubmit = async event => {
+    console.log(this.state);
     // event.preventDefault();
     // this.setState({ loading: true });
     // if (this.state.password != this.state.password2) {
@@ -74,7 +76,6 @@ class Register extends Component {
             <form onSubmit={this.handleSubmit}>
               <div className="form-group row">
                 <div className="col">
-                  {/* <label>First Name</label> */}
                   <input
                     type="text"
                     className="form-control"
@@ -85,7 +86,6 @@ class Register extends Component {
                   />
                 </div>
                 <div className="col">
-                  {/* <label>Last Name</label> */}
                   <input
                     type="text"
                     className="form-control"
@@ -97,7 +97,6 @@ class Register extends Component {
                 </div>
               </div>
               <div className="form-group">
-                {/* <label>Email address</label> */}
                 <input
                   type="email"
                   className="form-control"
@@ -111,7 +110,12 @@ class Register extends Component {
                 </small>
               </div>
               <div className="form-group">
-                <select className="form-control" id="gradYear">
+                <select
+                  className="form-control"
+                  id="gradYear"
+                  value={this.state.gradYear}
+                  onChange={this.handleChange("gradYear")}
+                >
                   <option selected disabled hidden>
                     Graduation Year
                   </option>
@@ -121,7 +125,6 @@ class Register extends Component {
                 </select>
               </div>
               <div className="form-group">
-                {/* <label>Password</label> */}
                 <input
                   type="password"
                   className="form-control"
@@ -132,7 +135,6 @@ class Register extends Component {
                 />
               </div>
               <div className="form-group">
-                {/* <label className="form-label">Confirm Password</label> */}
                 <input
                   type="password"
                   className="form-control"
