@@ -6,193 +6,120 @@ const passport = require("passport");
 
 // MongoDB models
 
-// const User = require("../models/user");
-// const Post = require("../models/post");
+const User = require("../models/user");
 
 // // Login / Registration routes -------------------------------------------------------------
 
-// router.post("/register", (req, res) => {
-//   console.log(req.body);
-//   User.findOne({ email: req.body.email }).then(user => {
-//     if (user) {
-//       res.status(400).json({ msg: "Email already exists" });
-//     } else {
-//       // Create new User object
-//       const newUser = new User({
-//         name: req.body.name,
-//         email: req.body.email,
-//         password: req.body.password
-//       });
+router.post("/register", (req, res) => {
+  console.log("register req.body: ");
+  console.log(req.body);
+  User.findOne({ email: req.body.email }).then(user => {
+    if (user) {
+      res.status(400).json({ msg: "Email already exists" });
+    } else {
+      // Create new User object
+      const newUser = new User({
+        firstName: req.body.firstName,
+        secondName: req.body.secondName,
+        email: req.body.email,
+        graduationYear: req.body.graduationYear,
+        password: req.body.password
+      });
 
-//       // Hash password before saving in database
-//       bcrypt.genSalt(10, (err, salt) => {
-//         bcrypt.hash(newUser.password, salt, (err, hash) => {
-//           if (err) throw err;
-//           newUser.password = hash;
+      // Hash password before saving in database
+      bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newUser.password, salt, (err, hash) => {
+          if (err) {
+            res.status(400).json({ msg: "Invalid request" });
+            return;
+          }
 
-//           // Calling .save inserts the mongo object into the collection
-//           newUser
-//             .save()
-//             .then(user => res.send("Success")) // .save is a promise, send the response when promise is executed
-//             .catch(err => res.send(err));
-//         });
-//       });
-//     }
-//   });
-// });
+          newUser.password = hash;
 
-// router.post("/login", (req, res) => {
-//   console.log("RECEIVED POST /LOGIN");
-//   console.log(req.body);
-//   const email = req.body.email;
-//   const password = req.body.password;
+          // Calling .save inserts the mongo object into the collection
+          newUser
+            .save()
+            .then(user => res.send("Success")) // .save is a promise, send the response when promise is executed
+            .catch(err => res.send(err));
+        });
+      });
+    }
+  });
+});
 
-//   // Find user by email
-//   User.findOne({ email })
-//     .select("+password")
-//     .exec()
-//     .then(user => {
-//       // Check if user exists
-//       console.log("user: " + user);
-//       if (!user || user == null) {
-//         res.status(404).json({ emailnotfound: "Email not found" });
-//         return;
-//       }
+router.post("/login", (req, res) => {
+  console.log("RECEIVED POST /LOGIN");
+  console.log(req.body);
+  const email = req.body.email;
+  const password = req.body.password;
 
-//       // Check password
-//       bcrypt.compare(password, user.password, (err, isMatch) => {
-//         console.log("password validation: " + (isMatch ? "invalid" : "valid"));
+  // Find user by email
+  User.findOne({ email })
+    .select("+password") // password is by default not selected. '+' allows selection
+    .exec()
+    .then(user => {
+      // Check if user exists
+      console.log("user: " + user);
+      if (!user || user == null) {
+        res.status(404).json({ msg: "Email not found" });
+        return;
+      }
 
-//         if (isMatch) {
-//           console.log("ISMATCH");
-//           // User matched
-//           // Create JWT Payload
-//           const payload = {
-//             id: user.id,
-//             name: user.name,
-//             email: user.email
-//           };
+      // Check password
+      bcrypt.compare(password, user.password, (err, isMatch) => {
+        console.log("password validation: " + (isMatch ? "valid" : "invalid"));
 
-//           // Sign token
-//           jwt.sign(
-//             payload,
-//             process.env.SECRET,
-//             {
-//               expiresIn: 31556926 // 1 year in seconds
-//             },
-//             (err, token) => {
-//               res.json({
-//                 success: true,
-//                 token: token
-//               });
-//             }
-//           );
-//         } else {
-//           res.status(400).json({ passwordincorrect: "Password incorrect" });
-//         }
-//       });
-//     })
-//     .catch(err => {
-//       console.log(err);
-//       res.send("Error");
-//     });
-// });
+        if (isMatch) {
+          // User matched
+          // Create JWT Payload
+          const payload = {
+            id: user.id,
+            name: user.name,
+            email: user.email
+          };
 
-// router.get("/protected", (req, res, next) => {
-//   //user is payload from jwt token
-//   passport.authenticate("jwt", { session: false }, (err, user, info) => {
-//     if (err) {
-//       res.status(400).json({ msg: "There was an error" });
-//       console.log(err);
-//     }
+          // Sign token
+          jwt.sign(
+            payload,
+            process.env.SECRET,
+            {
+              expiresIn: 31556926 // 1 year in seconds
+            },
+            (err, token) => {
+              res.json({
+                success: true,
+                token: token
+              });
+            }
+          );
+        } else {
+          res.status(400).json({ msg: "Password incorrect" });
+        }
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.send("Error");
+    });
+});
 
-//     if (!user) {
-//       res.status(404).json({ msg: "Invalid token." });
-//     }
+// Example protected route that returns user data associated with JWT token sent
+router.get("/protected", (req, res, next) => {
+  // returns a method, which is immediately called with (req, res, next) params
+  passport.authenticate("jwt", { session: false }, (err, user, info) => {
+    if (err) {
+      res.status(400).json({ msg: "There was an error" });
+      console.log(err);
+    }
 
-//     //User found, send json
-//     res.send({ userData: user, msg: "authenticated" });
-//   })(req, res, next);
-// });
+    if (!user) {
+      res.status(404).json({ msg: "Invalid token." });
+    }
 
-// //-----------------------------------------------------------------------------------------
-
-// // Post data routes
-
-// // Get all posts
-// router.get("/posts/", (req, res) => {
-//   Post.find({}, err => {
-//     if (err) console.log(err);
-//   })
-//     .populate("user")
-//     .exec((err, post) => {
-//       if (err) res.send("Failure");
-//       else res.send(post);
-//     });
-// });
-
-// router.get("/posts/:id", (req, res) => {
-//   Post.findOne({ _id: req.params.id }, (err, post) => {
-//     if (err) res.send("Failure");
-//     if (!post) res.sendStatus(404);
-//     else res.send(post);
-//   })
-//     .populate("user")
-//     .exec((err, post) => {
-//       if (err) res.send("Failure");
-//       else res.send(post);
-//     });
-// });
-
-// router.post("/posts/", (req, res) => {
-//   // Date is added automatically
-//   Post.insertMany(
-//     {
-//       title: req.body.title,
-//       user: req.body.user,
-//       body: req.body.body,
-//       circles: req.body.circles
-//     },
-//     err => {
-//       if (err) res.send("Failure");
-//       else res.send("Success");
-//     }
-//   );
-// });
-
-// router.put("/posts/:id", (req, res) => {
-//   let fail = false;
-//   Post.findById(req.params.id, (err, post) => {
-//     if (err) console.log(err);
-//     if (!post) {
-//       res.sendStatus(404);
-//     } else {
-//       Post.updateOne({ _id: req.params.id }, req.body, (err, post) => {
-//         if (err) {
-//           console.log(err);
-//           res.send("Failure");
-//         }
-//       });
-//     }
-//     res.send("Success");
-//   });
-// });
-
-// router.delete("/posts/:id", (req, res) => {
-//   Post.findByIdAndDelete(req.params.id, (err, post) => {
-//     if (err) {
-//       res.send("Failure");
-//     } else if (!post) {
-//       res.sendStatus(404);
-//     } else {
-//       res.send("Success");
-//     }
-//   });
-// });
-
-// // TODO: Returns a list of circle names
-// // router.get("/circles", (req, res) => {
-// // });
+    //User found, send json
+    res.send({ userData: user, msg: "authenticated" });
+  })(req, res, next);
+});
 
 // // User data routes ---------------------------------------------------------------
 
