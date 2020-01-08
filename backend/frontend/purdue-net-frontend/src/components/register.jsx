@@ -51,7 +51,7 @@ class Register extends Component {
       this.setState({
         loading: false,
         error: true,
-        msg: "Passwords don't match"
+        msg: "Passwords don't match."
       });
       return;
     }
@@ -61,7 +61,7 @@ class Register extends Component {
       this.setState({
         loading: false,
         error: true,
-        msg: "Please enter a Purdue University affiliated email"
+        msg: "Please enter a Purdue University affiliated email."
       });
       return;
     }
@@ -71,7 +71,7 @@ class Register extends Component {
       this.setState({
         loading: false,
         error: true,
-        msg: "Please enter your year of graduation"
+        msg: "Please enter your year of graduation."
       });
       return;
     }
@@ -90,6 +90,14 @@ class Register extends Component {
       this.setState({ loading: false, error: false, msg: "Success" });
     } catch (err) {
       console.log(err);
+      if (err.response.data.msg === "ACC_EXISTS") {
+        this.setState({
+          loading: false,
+          error: true,
+          msg: "Account already exists."
+        });
+        return;
+      }
       this.setState({
         loading: false,
         error: true,

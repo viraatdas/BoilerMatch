@@ -46,11 +46,14 @@ class Login extends Component {
       // Handle error codes
       console.log("Incorrect login: " + err);
       if (err.response.status === 400 || err.response.status === 404) {
-        this.setState({ loading: false, error: "Email or password incorrect" });
+        this.setState({
+          loading: false,
+          error: "Email or password incorrect."
+        });
       } else {
         this.setState({
           loading: false,
-          error: "Login Failed"
+          error: "Login Failed."
         });
       }
     }
