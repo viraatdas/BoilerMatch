@@ -12,7 +12,8 @@ class Register extends Component {
     password: "",
     password2: "",
     loading: false,
-    error: "",
+    error: false,
+    msg: "",
     yearList: []
   };
 
@@ -42,17 +43,27 @@ class Register extends Component {
   };
 
   handleSubmit = async event => {
-    console.log(this.state);
     event.preventDefault();
     this.setState({ loading: true });
 
     // Check if password and confirm password fields match
     if (this.state.password != this.state.password2) {
-      this.setState({ loading: false, msg: "Passwords don't match" });
+      this.setState({
+        loading: false,
+        error: true,
+        msg: "Passwords don't match"
+      });
+      return;
     }
 
-    // Check if email is @purdue.edu or @alumni.purdue.edu
-    if (this) {
+    if (!/.+@(?:(purdue)|(alumni\.purdue))\.edu/.test(this.state.email)) {
+      // Check if email is @purdue.edu or @alumni.purdue.edu
+      this.setState({
+        loading: false,
+        error: true,
+        msg: "Please enter a Purdue University affiliated email"
+      });
+      return;
     }
 
     // Send API request
@@ -64,13 +75,21 @@ class Register extends Component {
     try {
       const res = await axios.post("/api/register", userData);
       if (!res.data.isSuccess) {
-        this.setState({ loading: false, msg: "Registration Failed." });
+        this.setState({
+          loading: false,
+          error: true,
+          msg: "Registration Failed."
+        });
         return;
       }
-      this.setState({ loading: false, msg: "Success" });
+      this.setState({ loading: false, error: false, msg: "Success" });
     } catch (err) {
       console.log(err);
-      this.setState({ loading: false, msg: "Registration Failed." });
+      this.setState({
+        loading: false,
+        error: true,
+        msg: "Registration Failed."
+      });
     }
   };
 
@@ -134,8 +153,8 @@ class Register extends Component {
                   <option selected disabled hidden>
                     Graduation Year
                   </option>
-                  {this.state.yearList.map(year => (
-                    <option>{year}</option>
+                  {this.state.yearList.map((year, i) => (
+                    <option key={i}>{year}</option>
                   ))}
                 </select>
               </div>
@@ -177,8 +196,8 @@ class Register extends Component {
               </div>
             </form>
             {this.state.error && (
-              <div class="alert alert-danger form-alert" role="alert">
-                {this.state.error}
+              <div className="alert alert-danger form-alert" role="alert">
+                {this.state.msg}
               </div>
             )}
           </div>
