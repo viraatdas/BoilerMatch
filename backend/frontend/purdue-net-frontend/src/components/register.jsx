@@ -43,25 +43,29 @@ class Register extends Component {
 
   handleSubmit = async event => {
     console.log(this.state);
-    // event.preventDefault();
-    // this.setState({ loading: true });
-    // if (this.state.password != this.state.password2) {
-    //   this.setState({ loading: false, msg: "Passwords don't match" });
-    // } else {
-    //   let userData = {
-    //     name: this.state.name,
-    //     email: this.state.email,
-    //     password: this.state.password
-    //   };
-    //   console.log(userData);
-    //   try {
-    //     const res = await axios.post("/api/register", userData);
-    //     this.setState({ loading: false, msg: "Success" });
-    //   } catch (err) {
-    //     console.log(err);
-    //     this.setState({ loading: false, msg: "Registration Failed." });
-    //   }
-    // }
+    event.preventDefault();
+    this.setState({ loading: true });
+    // Check if password and confirm password fields match
+    if (this.state.password != this.state.password2) {
+      this.setState({ loading: false, msg: "Passwords don't match" });
+    } else {
+      let userData = {
+        name: this.state.name,
+        email: this.state.email,
+        password: this.state.password
+      };
+      try {
+        const res = await axios.post("/api/register", userData);
+        if (!res.data.isSuccess) {
+          this.setState({ loading: false, msg: "Registration Failed." });
+          return;
+        }
+        this.setState({ loading: false, msg: "Success" });
+      } catch (err) {
+        console.log(err);
+        this.setState({ loading: false, msg: "Registration Failed." });
+      }
+    }
   };
 
   render() {

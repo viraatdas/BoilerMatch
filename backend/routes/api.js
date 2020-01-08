@@ -39,8 +39,8 @@ router.post("/register", (req, res) => {
           // Calling .save inserts the mongo object into the collection
           newUser
             .save()
-            .then(user => res.send("Success")) // .save is a promise, send the response when promise is executed
-            .catch(err => res.send(err));
+            .then(user => res.json({ isSuccess: true })) // .save is a promise, send the response when promise is executed
+            .catch(err => res.json({ isSuccess: false }));
         });
       });
     }

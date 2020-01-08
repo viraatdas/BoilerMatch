@@ -28,20 +28,22 @@ class Login extends Component {
   };
 
   handleSubmit = async event => {
-    // event.preventDefault();
-    // this.setState({ loading: true });
-    // let userData = { email: this.state.email, password: this.state.password };
-    // try {
-    //   const res = await axios.post("/api/login", userData);
-    //   // Save to localStorage
-    //   // Set token to localStorage
-    //   const { token } = res.data;
-    //   localStorage.setItem("jwtToken", token);
-    //   this.setState({ loading: false, loggedIn: true });
-    // } catch (err) {
-    //   console.log("Incorrect login: " + err);
-    //   this.setState({ loading: false, error: "Login Failed" });
-    // }
+    event.preventDefault();
+    this.setState({ loading: true });
+    let userData = { email: this.state.email, password: this.state.password };
+    try {
+      const res = await axios.post("/api/login", userData);
+
+      // Handle response
+      // Extract token from response. If 'token' does not exist, then an error is thrown
+      const { token } = res.data;
+      localStorage.setItem("jwtToken", token);
+      this.setState({ loading: false, loggedIn: true });
+    } catch (err) {
+      // Handle failed login
+      console.log("Incorrect login: " + err);
+      this.setState({ loading: false, error: "Login Failed" });
+    }
   };
 
   render() {
