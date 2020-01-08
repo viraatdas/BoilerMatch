@@ -104,22 +104,22 @@ router.post("/login", (req, res) => {
 });
 
 // Example protected route that returns user data associated with JWT token sent
-router.get("/protected", (req, res, next) => {
-  // returns a method, which is immediately called with (req, res, next) params
-  passport.authenticate("jwt", { session: false }, (err, user, info) => {
-    if (err) {
-      res.status(400).json({ msg: "There was an error" });
-      console.log(err);
-    }
+// router.get("/protected", (req, res, next) => {
+//   // returns a method, which is immediately called with (req, res, next) params
+//   passport.authenticate("jwt", { session: false }, (err, user, info) => {
+//     if (err) {
+//       res.status(400).json({ msg: "There was an error" });
+//       console.log(err);
+//     }
 
-    if (!user) {
-      res.status(404).json({ msg: "Invalid token." });
-    }
+//     if (!user) {
+//       res.status(404).json({ msg: "Invalid token." });
+//     }
 
-    //User found, send json
-    res.send({ userData: user, msg: "authenticated" });
-  })(req, res, next);
-});
+//     //User found, send json
+//     res.send({ userData: user, msg: "authenticated" });
+//   })(req, res, next);
+// });
 
 // // User data routes ---------------------------------------------------------------
 
