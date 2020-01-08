@@ -30,19 +30,29 @@ class Login extends Component {
   handleSubmit = async event => {
     event.preventDefault();
     this.setState({ loading: true });
+
+    // Call API
     let userData = { email: this.state.email, password: this.state.password };
     try {
       const res = await axios.post("/api/login", userData);
 
       // Handle response
+
       // Extract token from response. If 'token' does not exist, then an error is thrown
       const { token } = res.data;
       localStorage.setItem("jwtToken", token);
       this.setState({ loading: false, loggedIn: true });
     } catch (err) {
-      // Handle failed login
+      // Handle error codes
       console.log("Incorrect login: " + err);
-      this.setState({ loading: false, error: "Login Failed" });
+      if (err.response.status === 400 || err.response.status === 404) {
+        this.setState({ loading: false, error: "Email or password incorrect" });
+      } else {
+        this.setState({
+          loading: false,
+          error: "Login Failed"
+        });
+      }
     }
   };
 
@@ -65,6 +75,7 @@ class Login extends Component {
                   value={this.state.email}
                   placeholder="Email"
                   onChange={this.handleChange("email")}
+                  required
                 />
               </div>
               <div className="form-group">
@@ -75,6 +86,7 @@ class Login extends Component {
                   id="password"
                   placeholder="Password"
                   onChange={this.handleChange("password")}
+                  required
                 />
               </div>
               <div className="row">
@@ -93,7 +105,7 @@ class Login extends Component {
               </div>
             </form>
             {this.state.error && (
-              <div className="alert alert-primary form-alert" role="alert">
+              <div className="alert alert-danger form-alert" role="alert">
                 {this.state.error}
               </div>
             )}

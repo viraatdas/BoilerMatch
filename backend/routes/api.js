@@ -47,6 +47,16 @@ router.post("/register", (req, res) => {
   });
 });
 
+/**
+ * Login API endpoint.
+ *
+ * Uses bcrypt to compare passwords, and sends a response with
+ * one of the following response codes:
+ *
+ * 0 - Success
+ * 1 - Account not found / Password incorrect
+ * 2 - Backend Error
+ */
 router.post("/login", (req, res) => {
   console.log("RECEIVED POST /LOGIN");
   console.log(req.body);
@@ -66,40 +76,45 @@ router.post("/login", (req, res) => {
       }
 
       // Check password
-      bcrypt.compare(password, user.password, (err, isMatch) => {
-        console.log("password validation: " + (isMatch ? "valid" : "invalid"));
-
-        if (isMatch) {
-          // User matched
-          // Create JWT Payload
-          const payload = {
-            id: user.id,
-            name: user.name,
-            email: user.email
-          };
-
-          // Sign token
-          jwt.sign(
-            payload,
-            process.env.SECRET,
-            {
-              expiresIn: 31556926 // 1 year in seconds
-            },
-            (err, token) => {
-              res.json({
-                success: true,
-                token: token
-              });
-            }
+      bcrypt
+        .compare(password, user.password, (err, isMatch) => {
+          console.log(
+            "password validation: " + (isMatch ? "valid" : "invalid")
           );
-        } else {
-          res.status(400).json({ msg: "Password incorrect" });
-        }
-      });
+
+          if (isMatch) {
+            // User matched
+            // Create JWT Payload
+            const payload = {
+              id: user.id,
+              name: user.name,
+              email: user.email
+            };
+
+            // Sign token
+            jwt.sign(
+              payload,
+              process.env.SECRET,
+              {
+                expiresIn: 31556926 // 1 year in seconds
+              },
+              (err, token) => {
+                res.json({
+                  code: 0,
+                  success: true,
+                  token: token
+                });
+              }
+            );
+          } else {
+            res.status(400).json({ msg: "Password incorrect" });
+          }
+        })
+        .catch(err => res.status(500).json({ msg: "Internal Error" }));
     })
     .catch(err => {
       console.log(err);
-      res.send("Error");
+      res.status(404).json({ msg: "User not found" });
     });
 });
 
