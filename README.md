@@ -11,6 +11,7 @@ TODO
   - Send confirmation email after user has created an account
 - Backend verification
   - Check purdue affiliated email
+  - Password length and contents
 - Configure database
   - figure out a proper way to store friends
 - Interface

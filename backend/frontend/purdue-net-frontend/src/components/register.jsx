@@ -67,7 +67,7 @@ class Register extends Component {
     }
 
     // Check if graduation year has been filled
-    if (this.state.gradYear == "Graduation Year") {
+    if (this.state.gradYear === "Graduation Year") {
       this.setState({
         loading: false,
         error: true,
