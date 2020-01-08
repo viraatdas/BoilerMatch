@@ -47,7 +47,7 @@ class Register extends Component {
     this.setState({ loading: true });
 
     // Check if password and confirm password fields match
-    if (this.state.password != this.state.password2) {
+    if (this.state.password !== this.state.password2) {
       this.setState({
         loading: false,
         error: true,
@@ -56,12 +56,22 @@ class Register extends Component {
       return;
     }
 
+    // Check if email is @purdue.edu or @alumni.purdue.edu
     if (!/.+@(?:(purdue)|(alumni\.purdue))\.edu/.test(this.state.email)) {
-      // Check if email is @purdue.edu or @alumni.purdue.edu
       this.setState({
         loading: false,
         error: true,
         msg: "Please enter a Purdue University affiliated email"
+      });
+      return;
+    }
+
+    // Check if graduation year has been filled
+    if (this.state.gradYear == "Graduation Year") {
+      this.setState({
+        loading: false,
+        error: true,
+        msg: "Please enter your year of graduation"
       });
       return;
     }
@@ -94,7 +104,7 @@ class Register extends Component {
   };
 
   render() {
-    if (this.state.msg == "Success") {
+    if (this.state.msg === "Success") {
       return <Redirect to="/login" />;
     }
 
