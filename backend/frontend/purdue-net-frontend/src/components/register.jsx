@@ -78,20 +78,15 @@ class Register extends Component {
 
     // Send API request
     let userData = {
-      name: this.state.name,
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      graduationYear: this.state.gradYear,
       email: this.state.email,
       password: this.state.password
     };
+    console.log(userData);
     try {
       const res = await axios.post("/api/register", userData);
-      if (!res.data.isSuccess) {
-        this.setState({
-          loading: false,
-          error: true,
-          msg: "Registration Failed."
-        });
-        return;
-      }
       this.setState({ loading: false, error: false, msg: "Success" });
     } catch (err) {
       console.log(err);

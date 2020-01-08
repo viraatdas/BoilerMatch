@@ -20,7 +20,7 @@ router.post("/register", (req, res) => {
       // Create new User object
       const newUser = new User({
         firstName: req.body.firstName,
-        secondName: req.body.secondName,
+        lastName: req.body.lastName,
         email: req.body.email,
         graduationYear: req.body.graduationYear,
         password: req.body.password
@@ -33,14 +33,19 @@ router.post("/register", (req, res) => {
             res.status(400).json({ msg: "Invalid request" });
             return;
           }
-
           newUser.password = hash;
 
           // Calling .save inserts the mongo object into the collection
           newUser
             .save()
-            .then(user => res.json({ isSuccess: true })) // .save is a promise, send the response when promise is executed
-            .catch(err => res.json({ isSuccess: false }));
+            .then(user => {
+              res.json({ isSuccess: true });
+              console.log("User saved");
+            }) // .save is a promise, send the response when promise is executed
+            .catch(err => {
+              res.status(500).json({ isSuccess: false });
+              console.log("User not saved | " + err);
+            });
         });
       });
     }
@@ -76,41 +81,37 @@ router.post("/login", (req, res) => {
       }
 
       // Check password
-      bcrypt
-        .compare(password, user.password, (err, isMatch) => {
-          console.log(
-            "password validation: " + (isMatch ? "valid" : "invalid")
+      bcrypt.compare(password, user.password, (err, isMatch) => {
+        console.log("password validation: " + (isMatch ? "valid" : "invalid"));
+
+        if (isMatch) {
+          // User matched
+          // Create JWT Payload
+          const payload = {
+            id: user.id,
+            name: user.firstName + user.lastName,
+            email: user.email
+          };
+
+          // Sign token
+          jwt.sign(
+            payload,
+            process.env.SECRET,
+            {
+              expiresIn: 31556926 // 1 year in seconds
+            },
+            (err, token) => {
+              res.json({
+                code: 0,
+                success: true,
+                token: token
+              });
+            }
           );
-
-          if (isMatch) {
-            // User matched
-            // Create JWT Payload
-            const payload = {
-              id: user.id,
-              name: user.name,
-              email: user.email
-            };
-
-            // Sign token
-            jwt.sign(
-              payload,
-              process.env.SECRET,
-              {
-                expiresIn: 31556926 // 1 year in seconds
-              },
-              (err, token) => {
-                res.json({
-                  code: 0,
-                  success: true,
-                  token: token
-                });
-              }
-            );
-          } else {
-            res.status(400).json({ msg: "Password incorrect" });
-          }
-        })
-        .catch(err => res.status(500).json({ msg: "Internal Error" }));
+        } else {
+          res.status(400).json({ msg: "Password incorrect" });
+        }
+      });
     })
     .catch(err => {
       console.log(err);
@@ -157,17 +158,18 @@ router.post("/login", (req, res) => {
 //   });
 // });
 
-// router.post("/users/", (req, res) => {
-//   User.insertMany({
-//     name: req.body.name,
-//     email: req.body.email,
-//     password: req.body.password,
-//     points: 0
-//   })
-//     .then(user => console.log("inserted: " + user))
-//     .catch(e => console.log(e));
-//   res.send("Success");
-// });
+router.post("/users/", (req, res) => {
+  User.insertMany({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    graduationYear: req.body.graduationYear,
+    email: req.body.email,
+    password: req.body.password
+  })
+    .then(user => console.log("inserted: " + user))
+    .catch(e => console.log(e));
+  res.send("Success");
+});
 
 // router.put("/users/:id", (req, res) => {
 //   let fail = false;
