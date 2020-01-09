@@ -43,29 +43,48 @@ class Register extends Component {
 
   handleSubmit = async event => {
     console.log(this.state);
-    // event.preventDefault();
-    // this.setState({ loading: true });
-    // if (this.state.password != this.state.password2) {
-    //   this.setState({ loading: false, msg: "Passwords don't match" });
-    // } else {
-    //   let userData = {
-    //     name: this.state.name,
-    //     email: this.state.email,
-    //     password: this.state.password
-    //   };
-    //   console.log(userData);
-    //   try {
-    //     const res = await axios.post("/api/register", userData);
-    //     this.setState({ loading: false, msg: "Success" });
-    //   } catch (err) {
-    //     console.log(err);
-    //     this.setState({ loading: false, msg: "Registration Failed." });
-    //   }
-    // }
+    event.preventDefault();
+    this.setState({ loading: true });
+    var purdue_substr = "@purdue.edu";
+    var purdue_alum_substr = "@alumni.purdue.edu";
+
+    // check if fields are filled
+    if (!(this.state.name && this.state.email && 
+      this.state.password && this.state.password2)) {
+        console.log("wus good");
+        this.setState({ loading: false, msg: "Make sure all the fields are filled"});
+    }
+
+    // if email is not @purdue.edu or @alum.purdue.edu
+    else if (!(this.state.email.includes(purdue_substr) || 
+      this.state.email.includes(purdue_alum_substr))) {
+        this.setState({ loading: false, msg: "Email is not a purdue affiliated address"});
+    }
+    
+    // make sure both passwords match
+    else if (this.state.password !== this.state.password2) {
+      this.setState({ loading: false, msg: "Passwords don't match" });
+    } 
+    
+    else {
+      let userData = {
+        name: this.state.name,
+        email: this.state.email,
+        password: this.state.password
+      };
+      console.log(userData);
+      try {
+        const res = await axios.post("/api/register", userData);
+        this.setState({ loading: false, msg: "Success" });
+      } catch (err) {
+        console.log(err);
+        this.setState({ loading: false, msg: "Registration Failed." });
+      }
+    }
   };
 
   render() {
-    if (this.state.msg == "Success") {
+    if (this.state.msg === "Success") {
       return <Redirect to="/login" />;
     }
 
