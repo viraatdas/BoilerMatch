@@ -8,7 +8,7 @@ const passport = require("passport");
 
 const User = require("../models/user");
 
-// // Login / Registration routes -------------------------------------------------------------
+// Login / Registration routes -------------------------------------------------------------
 
 router.post("/register", (req, res) => {
   console.log("register req.body: ");
@@ -128,35 +128,39 @@ router.post("/login", (req, res) => {
 //       console.log(err);
 //     }
 
-//     if (!user) {
-//       res.status(404).json({ msg: "Invalid token." });
-//     }
+    if (!user) {
+      res.status(404).json({ msg: "Invalid token." });
+    }
 
-//     //User found, send json
-//     res.send({ userData: user, msg: "authenticated" });
-//   })(req, res, next);
-// });
+    //User found, send json
+    res.send({ userData: user, msg: "authenticated" });
+  })(req, res, next);
+});
 
 // // User data routes ---------------------------------------------------------------
 
-// // Get all users
-// router.get("/users/", async (req, res) => {
-//   User.find({}, (err, users) => {
-//     if (err) console.log(err);
-//     res.send(users);
-//   });
-// });
+router.get("/users/:id", (req, res) => {
+  User.findById(req.params.id, (err, user) => {
+    if (err) console.log(err);
+    if (user) {
+      res.send(user);
+    } else {
+      res.sendStatus(404);
+    }
+  });
+});
 
-// router.get("/users/:id", (req, res) => {
-//   User.findById(req.params.id, (err, user) => {
-//     if (err) console.log(err);
-//     if (user) {
-//       res.send(user);
-//     } else {
-//       res.sendStatus(404);
-//     }
-//   });
-// });
+router.post("/users/", (req, res) => {
+  User.insertMany({
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+    points: 0
+  })
+    .then(user => console.log("inserted: " + user))
+    .catch(e => console.log(e));
+  res.send("Success");
+});
 
 router.post("/users/", (req, res) => {
   User.insertMany({
@@ -171,34 +175,16 @@ router.post("/users/", (req, res) => {
   res.send("Success");
 });
 
-// router.put("/users/:id", (req, res) => {
-//   let fail = false;
-//   User.findById(req.params.id, (err, user) => {
-//     if (err) console.log(err);
-//     if (!user) {
-//       res.sendStatus(404);
-//     } else {
-//       User.updateOne({ _id: req.params.id }, req.body, (err, user) => {
-//         if (err) {
-//           console.log(err);
-//           res.send("Failure");
-//         }
-//       });
-//     }
-//     res.send("Success");
-//   });
-// });
-
-// router.delete("/users/:id", (req, res) => {
-//   User.findByIdAndDelete(req.params.id, (err, user) => {
-//     if (err) {
-//       res.send("Failure");
-//     } else if (!user) {
-//       res.sendStatus(404);
-//     } else {
-//       res.send("Success");
-//     }
-//   });
-// });
+router.delete("/users/:id", (req, res) => {
+  User.findByIdAndDelete(req.params.id, (err, user) => {
+    if (err) {
+      res.send("Failure");
+    } else if (!user) {
+      res.sendStatus(404);
+    } else {
+      res.send("Success");
+    }
+  });
+});
 
 module.exports = router;

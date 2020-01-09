@@ -46,6 +46,17 @@ class Register extends Component {
     event.preventDefault();
     this.setState({ loading: true });
 
+     // check if fields are filled
+     if (!(this.state.name && this.state.email && 
+      this.state.password && this.state.password2)) {
+        this.setState({
+          loading: false,
+          error: true,
+          msg: "Make sure all fields are filled"
+        });
+        return;
+    }
+
     // Check if password and confirm password fields match
     if (this.state.password !== this.state.password2) {
       this.setState({
@@ -56,6 +67,7 @@ class Register extends Component {
       return;
     }
 
+    
     // Check if email is @purdue.edu or @alumni.purdue.edu
     if (!/.+@(?:(purdue)|(alumni\.purdue))\.edu/.test(this.state.email)) {
       this.setState({
