@@ -51,7 +51,6 @@ class Register extends Component {
     // check if fields are filled
     if (!(this.state.name && this.state.email && 
       this.state.password && this.state.password2)) {
-        console.log("wus good");
         this.setState({ loading: false, msg: "Make sure all the fields are filled"});
     }
 
