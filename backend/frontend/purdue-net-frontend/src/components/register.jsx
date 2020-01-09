@@ -12,7 +12,8 @@ class Register extends Component {
     password: "",
     password2: "",
     loading: false,
-    error: "",
+    error: false,
+    msg: "",
     yearList: []
   };
 
@@ -42,30 +43,71 @@ class Register extends Component {
   };
 
   handleSubmit = async event => {
-    console.log(this.state);
-    // event.preventDefault();
-    // this.setState({ loading: true });
-    // if (this.state.password != this.state.password2) {
-    //   this.setState({ loading: false, msg: "Passwords don't match" });
-    // } else {
-    //   let userData = {
-    //     name: this.state.name,
-    //     email: this.state.email,
-    //     password: this.state.password
-    //   };
-    //   console.log(userData);
-    //   try {
-    //     const res = await axios.post("/api/register", userData);
-    //     this.setState({ loading: false, msg: "Success" });
-    //   } catch (err) {
-    //     console.log(err);
-    //     this.setState({ loading: false, msg: "Registration Failed." });
-    //   }
-    // }
+    event.preventDefault();
+    this.setState({ loading: true });
+
+    // Check if password and confirm password fields match
+    if (this.state.password !== this.state.password2) {
+      this.setState({
+        loading: false,
+        error: true,
+        msg: "Passwords don't match."
+      });
+      return;
+    }
+
+    // Check if email is @purdue.edu or @alumni.purdue.edu
+    if (!/.+@(?:(purdue)|(alumni\.purdue))\.edu/.test(this.state.email)) {
+      this.setState({
+        loading: false,
+        error: true,
+        msg: "Please enter a Purdue University affiliated email."
+      });
+      return;
+    }
+
+    // Check if graduation year has been filled
+    if (this.state.gradYear === "Graduation Year") {
+      this.setState({
+        loading: false,
+        error: true,
+        msg: "Please enter your year of graduation."
+      });
+      return;
+    }
+
+    // Send API request
+    let userData = {
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      graduationYear: this.state.gradYear,
+      email: this.state.email,
+      password: this.state.password
+    };
+    console.log(userData);
+    try {
+      const res = await axios.post("/api/register", userData);
+      this.setState({ loading: false, error: false, msg: "Success" });
+    } catch (err) {
+      console.log(err);
+      if (err.response.data.msg === "ACC_EXISTS") {
+        this.setState({
+          loading: false,
+          error: true,
+          msg: "Account already exists."
+        });
+        return;
+      }
+      this.setState({
+        loading: false,
+        error: true,
+        msg: "Registration Failed."
+      });
+    }
   };
 
   render() {
-    if (this.state.msg == "Success") {
+    if (this.state.msg === "Success") {
       return <Redirect to="/login" />;
     }
 
@@ -84,6 +126,7 @@ class Register extends Component {
                     placeholder="First Name"
                     value={this.state.firstName}
                     onChange={this.handleChange("firstName")}
+                    required
                   />
                 </div>
                 <div className="col">
@@ -94,6 +137,7 @@ class Register extends Component {
                     placeholder="Last Name"
                     value={this.state.lastName}
                     onChange={this.handleChange("lastName")}
+                    required
                   />
                 </div>
               </div>
@@ -105,6 +149,7 @@ class Register extends Component {
                   placeholder="Enter your @purdue.edu or @alumni.purdue.edu email"
                   value={this.state.email}
                   onChange={this.handleChange("email")}
+                  required
                 />
                 <small id="emailHelp" className="form-text text-muted">
                   We'll never share your email with anyone else.
@@ -116,12 +161,13 @@ class Register extends Component {
                   id="gradYear"
                   value={this.state.gradYear}
                   onChange={this.handleChange("gradYear")}
+                  required
                 >
                   <option selected disabled hidden>
                     Graduation Year
                   </option>
-                  {this.state.yearList.map(year => (
-                    <option>{year}</option>
+                  {this.state.yearList.map((year, i) => (
+                    <option key={i}>{year}</option>
                   ))}
                 </select>
               </div>
@@ -133,6 +179,7 @@ class Register extends Component {
                   placeholder="Password"
                   value={this.state.password}
                   onChange={this.handleChange("password")}
+                  required
                 />
               </div>
               <div className="form-group">
@@ -143,6 +190,7 @@ class Register extends Component {
                   placeholder="Confirm Password"
                   value={this.state.password2}
                   onChange={this.handleChange("password2")}
+                  required
                 />
               </div>
               <div className="row">
@@ -161,8 +209,8 @@ class Register extends Component {
               </div>
             </form>
             {this.state.error && (
-              <div class="alert alert-primary form-alert" role="alert">
-                {this.state.error}
+              <div className="alert alert-danger form-alert" role="alert">
+                {this.state.msg}
               </div>
             )}
           </div>
