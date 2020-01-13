@@ -33,6 +33,7 @@ class Login extends Component {
 
     // Call API
     let userData = { email: this.state.email, password: this.state.password };
+    console.log("login " + userData);
     try {
       const res = await axios.post("/api/login", userData);
 

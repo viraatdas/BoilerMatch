@@ -45,18 +45,7 @@ class Register extends Component {
   handleSubmit = async event => {
     event.preventDefault();
     this.setState({ loading: true });
-
-     // check if fields are filled
-     if (!(this.state.name && this.state.email && 
-      this.state.password && this.state.password2)) {
-        this.setState({
-          loading: false,
-          error: true,
-          msg: "Make sure all fields are filled"
-        });
-        return;
-    }
-
+    
     // Check if password and confirm password fields match
     if (this.state.password !== this.state.password2) {
       this.setState({
@@ -94,12 +83,16 @@ class Register extends Component {
       lastName: this.state.lastName,
       graduationYear: this.state.gradYear,
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
+
     };
-    console.log(userData);
+    console.log("User data is " + userData);
+
     try {
       const res = await axios.post("/api/register", userData);
+
       this.setState({ loading: false, error: false, msg: "Success" });
+
     } catch (err) {
       console.log(err);
       if (err.response.data.msg === "ACC_EXISTS") {
