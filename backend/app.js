@@ -1,6 +1,6 @@
 /**
  * app.js
- * 
+ *
  * Entry point of boilermatch backend
  */
 
@@ -31,6 +31,8 @@ app.use("/api", apiRouter);
 app.use(function (req, res) {
   res.sendStatus(404);
 });
+
+/* Start server */
 
 app.listen(process.env.PORT, () =>
   console.log("Server started on port " + process.env.PORT + "...")
