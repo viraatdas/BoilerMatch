@@ -4,6 +4,7 @@
  * Handles routing for all user API endpoints
  */
 
+const db = require("../queries/queries");
 const express = require("express");
 const router = express.Router();
 
