@@ -24,9 +24,8 @@ app.use(express.urlencoded({ extended: false }));
 /* Routing */
 
 app.use(express.json());
-
-// API will be handled through '/'
-app.use("/", apiRouter);
+// app.use("/", express.static("../frontend/boilermatch-frontend/build"));
+app.use("/api", apiRouter);
 
 // Send 404 to any unhandled routes
 app.use(function (req, res) {
