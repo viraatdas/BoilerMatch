@@ -1,9 +1,7 @@
-# Purdue Social Network
+# BoilerMatch
 
 TODO
 
-- Name?
-- Place python process in the root directory
 - Authentication
   - Email must only be @purdue.edu
     - Validation should be done in both the frontend and backend (frontend for speed, backend to ensure external api requests don't create accounts with non-purdue emails)
