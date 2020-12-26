@@ -4,11 +4,13 @@
  * Entry point of boilermatch backend
  */
 
-require("dotenv").config();
+require("dotenv").config({path: "env"});
 
 const express = require("express");
 const apiRouter = require("./routes/api");
+const db = require("./queries");
 const app = express();
+
 
 /* Misc. */
 

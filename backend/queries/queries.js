@@ -7,7 +7,7 @@
 
 // https://blog.logrocket.com/setting-up-a-restful-api-with-node-js-and-postgresql-d96d6fc892d8/
 
-require("dotenv").config();
+require("dotenv").config({path: "../env"});
 const Pool = require("pg").Pool;
 
 const pool = new Pool({
@@ -17,6 +17,7 @@ const pool = new Pool({
   password: process.env.DB_PWD,
   port: process.env.DB_PORT,
 });
+
 
 /* Example query functions */
 
