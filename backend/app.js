@@ -8,7 +8,7 @@ require("dotenv").config({path: "env"});
 
 const express = require("express");
 const apiRouter = require("./routes/api");
-const db = require("./queries");
+const db = require("./queries/queries");
 const app = express();
 
 

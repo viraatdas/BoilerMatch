@@ -29,13 +29,12 @@ CREATE TABLE IF NOT EXISTS user_oauth_provider (
 	PRIMARY KEY (Oauth_ID)
 );
 
-CREATE TYPE pile_enum AS ENUM ('0', '1', '2');
-
+-- consider using an enum for Pile
 CREATE TABLE IF NOT EXISTS match (
     User_id_1 int,
     User_id_2 int,
     MatchDate DATE,
-    Pile pile_enum,
+    Pile int,
 	FOREIGN KEY (User_id_1) REFERENCES users(User_id),
     FOREIGN KEY (User_id_2) REFERENCES users(User_id)
 );

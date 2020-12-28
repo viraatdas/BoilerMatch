@@ -8,15 +8,48 @@
 // https://blog.logrocket.com/setting-up-a-restful-api-with-node-js-and-postgresql-d96d6fc892d8/
 
 require("dotenv").config({path: "../env"});
+const fs = require('fs');
+
 const Pool = require("pg").Pool;
 
+// Create pool with database information
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PWD,
-  port: process.env.DB_PORT,
+  user: process.env.POSTGRES_USER,
+  host: process.env.POSTGRES_HOST,
+  database: process.env.POSTGRES_DB,
+  password: process.env.POSTGRES_PASSWORD,
+  port: process.env.POSTGRES_PORT,
 });
+
+// Check if connection was established correctly
+pool
+  .connect()
+  .then(() =>{
+    console.log("Connection established successfully");
+  })
+  .catch(err => {
+    console.error("Unable to connect to database: ", err);
+    throw err;
+  });
+
+// Run database.sql to create tables if they don't exist
+var sql_string = fs.readFileSync('./queries/database.sql', 'utf8');
+pool.query(sql_string, (error, results) => {
+  if (error) {
+    throw error
+  }
+  console.log(results.rows);
+});
+
+
+
+
+
+// console.log("TEST_2");
+
+
+// Initialize database if not setup
+
 
 
 /* Example query functions */
