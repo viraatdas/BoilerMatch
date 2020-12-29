@@ -5,7 +5,7 @@
  */
 
  /* DB query functions */
-const db = require("../queries/queries")
+const db = require("../db/queries")
 const express = require("express");
 const userApi = require("./user");
 const router = express.Router();
