@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS users (
 	DateCreated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     Birthday DATE NOT NULL DEFAULT CURRENT_DATE,
 	Device_ID int,
+	Location GEOMETRY(POINT),
 	FOREIGN KEY (Device_ID) REFERENCES user_device_info(Device_ID),
 	primary key(User_id)
 );

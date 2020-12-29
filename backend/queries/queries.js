@@ -34,12 +34,13 @@ pool
 
 // Run database.sql to create tables if they don't exist
 var sql_string = fs.readFileSync('./queries/database.sql', 'utf8');
-pool.query(sql_string, (error, results) => {
+
+pool.query(sql_string, (error, _) => {
   if (error) {
     throw error
   }
-  console.log(results.rows);
 });
+
 
 
 
