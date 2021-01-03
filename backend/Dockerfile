@@ -15,4 +15,3 @@ COPY ./ /usr/src/app
 
 # Exports
 EXPOSE 3000
-CMD [ "nodemon" ]

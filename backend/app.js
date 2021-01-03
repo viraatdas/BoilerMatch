@@ -14,18 +14,24 @@ const app = express();
 
 /* Misc. */
 
-app.use(express.urlencoded({ extended: false }));
+// app.use(express.urlencoded({ extended: false }));
 
 /* Routing */
 
 app.use(express.json());
-// app.use("/", express.static("../frontend/boilermatch-frontend/build"));
-app.use("/api", apiRouter);
+// respond with "hello world" when a GET request is made to the homepage
+app.get("/", (req, res) => {
+  res.send({ message: "We did it!" });
+});
+// app.use("/", express.static("../frontend/public/index.html"));
+// app.use("/api", apiRouter);
+
+
 
 // Send 404 to any unhandled routes
-app.use(function (req, res) {
-  res.sendStatus(404);
-});
+// app.use(function (req, res) {
+//   res.sendStatus(404);
+// });
 
 /* Start server */
 

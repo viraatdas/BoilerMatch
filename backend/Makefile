@@ -21,4 +21,4 @@ db_shell:
 	docker exec -ti postgres_db psql -U postgres -h 0.0.0.0 -d boilermatch
 
 stop:
-	docker-compose down
+	docker-compose down -v

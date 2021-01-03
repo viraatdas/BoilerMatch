@@ -35,11 +35,11 @@ pool
 // Initial database setup 
 // Run database.sql to create tables if they don't exist
 var sql_string = fs.readFileSync('./db/database.sql', 'utf8');
-
 pool.query(sql_string, (error, _) => {
   if (error) {
     throw error
   }
+  console.log("Database initialized successfully");
 });
 
 
@@ -61,6 +61,7 @@ const getUserById = (request, response) => {
     response.status(200).json(results.rows);
   });
 };
+
 
 const createUser = (request, response) => {
   const { name, email } = request.body;
