@@ -14,4 +14,7 @@ RUN npm install --quiet && mv /usr/src/app/node_modules/ /node_modules/
 COPY ./ /usr/src/app
 
 # Exports
-EXPOSE 3000
+EXPOSE 8000
+ENTRYPOINT ["./wait-for-it.sh", "postgres:5432", "-t", "5", "--", "nodemon", "backend"]
+
+

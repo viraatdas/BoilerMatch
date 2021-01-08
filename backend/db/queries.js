@@ -7,7 +7,7 @@
 
 // https://blog.logrocket.com/setting-up-a-restful-api-with-node-js-and-postgresql-d96d6fc892d8/
 
-require("dotenv").config({path: "../env"});
+require("dotenv").config({path: "env"});
 const fs = require('fs');
 
 const Pool = require("pg").Pool;
@@ -34,7 +34,7 @@ pool
 
 // Initial database setup 
 // Run database.sql to create tables if they don't exist
-var sql_string = fs.readFileSync('./db/database.sql', 'utf8');
+var sql_string = fs.readFileSync('db/database.sql', 'utf8');
 pool.query(sql_string, (error, _) => {
   if (error) {
     throw error
