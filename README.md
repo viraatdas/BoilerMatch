@@ -1,7 +1,7 @@
 # BoilerMatch
 
 ## How to run 
-This runs all three containers: backend, frontend, and postgres database
+This runs all three containers: backend, frontend, and postgres database. Currently only runs `web`
 - `make` 
 
 ## How to connect to database shell
