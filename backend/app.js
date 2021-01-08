@@ -4,21 +4,30 @@
  * Entry point of boilermatch backend
  */
 
-require("dotenv").config();
+require("dotenv").config({path: "env"});
 
 const express = require("express");
 const apiRouter = require("./routes/api");
+const db = require("./db/queries");
+const cors = require('cors');
 const app = express();
 
-/* Misc. */
-
-app.use(express.urlencoded({ extended: false }));
+// app.use(express.urlencoded({ extended: false }));
 
 /* Routing */
-
+app.use(cors());
 app.use(express.json());
-// app.use("/", express.static("../frontend/boilermatch-frontend/build"));
-app.use("/api", apiRouter);
+
+// land page
+app.get("/", (req, res) => {
+  res.send({ message: "We did it!" });
+});
+
+// simple test
+app.get("/test", (req, res) => {
+  res.send({ message: "Test successful!" });
+});
+// app.use("/api", apiRouter);
 
 // Send 404 to any unhandled routes
 app.use(function (req, res) {
