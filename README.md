@@ -4,6 +4,8 @@
 This runs all three containers: backend, frontend, and postgres database. Currently only runs `web`
 - `make` 
 
+Run `make build` if it doesn't work
+
 ## How to connect to database shell
 - `make db_shell` 
 
