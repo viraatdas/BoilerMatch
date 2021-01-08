@@ -1,19 +1,13 @@
 # BoilerMatch
 
-TODO
+## How to run 
+This runs all three containers: backend, frontend, and postgres database
+- `make` 
 
-- Authentication
-  - Email must only be @purdue.edu
-    - Validation should be done in both the frontend and backend (frontend for speed, backend to ensure external api requests don't create accounts with non-purdue emails)
-  - Password check
-  - Send confirmation email after user has created an account
-- Backend verification
-  - Check purdue affiliated email
-  - Password length and contents
-- Configure database
-  - figure out a proper way to store friends
-- Interface
-  - Send friend requests to people
-  - accept friend requests
+## How to run database 
+`make db_shell` 
+
+
+Check Makefile for other commands
 
 ### Currently being developed by @Automage and @viraatdas
