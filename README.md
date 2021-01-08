@@ -1,7 +1,7 @@
 # BoilerMatch
 
 ## How to run 
-This runs all three containers: backend, frontend, and postgres database. Currently only runs `web`
+This runs all three containers: backend, frontend, and postgres database. Frontend only set to `web` for now. 
 - `make` 
 
 Run `make build` if it doesn't work
