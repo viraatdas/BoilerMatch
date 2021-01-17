@@ -6,7 +6,7 @@ This runs all three containers: backend, frontend, and postgres database.
 
 Run `make build` if it doesn't work
 
-Frontend: `localhost:3000`
+Frontend [for web]: `localhost:3000`
 
 Backend: `localhost:8000`
 
