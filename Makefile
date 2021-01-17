@@ -1,3 +1,4 @@
+
 .PHONY: start build recreate start_web start_db db_shell stop
 
 .DEFAULT_GOAL := start
@@ -21,4 +22,4 @@ db_shell:
 	docker exec -ti postgres_db psql -U postgres -h 0.0.0.0 -d boilermatch
 
 stop:
-	docker-compose down -v
+	docker-compose down -v && docker network prune

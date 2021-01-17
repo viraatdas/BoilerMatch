@@ -7,10 +7,10 @@ RUN mkdir -p /usr/frontend/
 COPY package*.json /usr/frontend/
 WORKDIR /usr/frontend/
 
-RUN yarn install --silent
+RUN npm install --quiet
 
 # Exports
 EXPOSE 3000
-ENTRYPOINT ["yarn", "run", "web"]
+ENTRYPOINT ["npm", "start"]
 
 
