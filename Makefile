@@ -1,3 +1,4 @@
+
 .PHONY: start build recreate start_web start_db db_shell stop
 
 .DEFAULT_GOAL := start
@@ -7,6 +8,9 @@ start:
 	
 build:
 	docker-compose up --build
+
+run-ios:
+	react-native run-ios
 
 recreate:
 	docker-compose up --force-recreate
@@ -21,4 +25,4 @@ db_shell:
 	docker exec -ti postgres_db psql -U postgres -h 0.0.0.0 -d boilermatch
 
 stop:
-	docker-compose down -v
+	docker-compose down -v && docker network prune
