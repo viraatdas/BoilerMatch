@@ -9,9 +9,6 @@ start:
 build:
 	docker-compose up --build
 
-run-ios:
-	react-native run-ios
-
 recreate:
 	docker-compose up --force-recreate
 
