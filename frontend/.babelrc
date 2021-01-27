@@ -1,6 +1,17 @@
-{
+{ 
   "presets": [
-  "@babel/preset-env",
-  "@babel/preset-react"
-  ]
+      "@babel/preset-env", 
+      "@babel/preset-react", 
+      "module:metro-react-native-babel-preset",
+      ["es2015", { "modules": false }]
+    ],
+
+    "plugins": [
+      "@babel/plugin-proposal-class-properties", 
+      "@babel/plugin-proposal-object-rest-spread",
+      "@babel/transform-flow-strip-types",
+      "@babel/transform-runtime"
+    ],
+
+    "sourceMaps": true
 }

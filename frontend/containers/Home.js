@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, ImageBackground } from 'react-native';
 import CardStack, { Card } from 'react-native-card-stack-swiper';
 import City from '../components/City';
@@ -7,6 +7,7 @@ import CardItem from '../components/CardItem';
 import styles from '../assets/styles';
 import Demo from '../assets/data/demo.js';
 
+const t = {}
 
 const Home = () => {
   return (
@@ -24,7 +25,7 @@ const Home = () => {
           loop={true}
           verticalSwipe={false}
           renderNoMoreCards={() => null}
-          ref={swiper => ( this.swiper = swiper )}
+          ref={swiper => { t.swiper = swiper }}
         >
           {Demo.map((item, index) => (
             <Card key={index}>
@@ -34,8 +35,8 @@ const Home = () => {
                 description={item.description}
                 matches={item.match}
                 actions
-                onPressLeft={() => this.swiper.swipeLeft()}
-                onPressRight={() => this.swiper.swipeRight()}
+                onPressLeft={() => t.swiper.swipeLeft()}
+                onPressRight={() => t.swiper.swipeRight()}
               />
             </Card>
           ))}
