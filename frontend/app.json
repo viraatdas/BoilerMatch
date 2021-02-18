@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "tinderReact",
-    "slug": "react-native-web-tinder-clone-expo",
+    "name": "frontend",
+    "slug": "frontend",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -19,8 +19,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "boilermatch"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {

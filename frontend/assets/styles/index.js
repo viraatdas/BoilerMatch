@@ -15,7 +15,7 @@ const LIKE_ACTIONS = "#B644B2";
 const DISLIKE_ACTIONS = "#363636";
 const FLASH_ACTIONS = "#5028D7";
 
-const ICON_FONT = "tinderclone";
+const ICON_FONT = "Al Nile";
 
 const DIMENSION_WIDTH = Dimensions.get("window").width;
 const DIMENSION_HEIGHT = Dimensions.get("window").height;
