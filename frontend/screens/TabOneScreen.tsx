@@ -13,9 +13,7 @@ export default function TabOneScreen() {
   const [state, setState] = useState(new Map());
 
   var curr_swiper = null;
-  // useEffect(() =>
 
-  // )
   return (
     <ImageBackground
       source={require("../assets/images/bg.png")}
