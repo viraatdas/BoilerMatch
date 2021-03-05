@@ -1,14 +1,26 @@
-import React from 'react';
-import styles from '../assets/styles';
+import React, { useState } from "react";
 
-import { Text, TouchableOpacity } from 'react-native';
-import Icon from './Icon';
+import styles from "../assets/styles";
 
-const Filters = () => {
+import { Text, TouchableOpacity, Button, Alert } from "react-native";
+import Icon from "./Icon";
+
+const Filters = (props) => {
+  const [showPicker, setPicker] = useState(false);
+  const handleOnPress = () => {
+    setPicker(!showPicker);
+  };
+
   return (
-    <TouchableOpacity style={styles.filters}>
+    <TouchableOpacity
+      style={styles.filters}
+      onPress={() => {
+        setPicker(!showPicker);
+        props.onChange(showPicker);
+      }}
+    >
       <Text style={styles.filtersText}>
-        <Icon name="filter" /> Filters
+        <Icon name="filter" />
       </Text>
     </TouchableOpacity>
   );
