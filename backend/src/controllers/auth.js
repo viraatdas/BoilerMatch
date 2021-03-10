@@ -8,20 +8,17 @@ const { sendEmail } = require("../utils/index");
 exports.register = async (req, res) => {
   try {
     const { email } = req.body;
-
     // Make sure this account doesn't already exist
     const user = await User.findOne({ email });
 
     if (user)
-      return res
-        .status(401)
-        .json({
-          message:
-            "The email address you have entered is already associated with another account.",
-        });
+      return res.status(401).json({
+        message:
+          "The email address you have entered is already associated with another account.",
+      });
 
     const newUser = new User({ ...req.body, role: "basic" });
-
+    console.log(req.body);
     const user_ = await newUser.save();
 
     await sendVerificationEmail(user_, req, res);
@@ -40,14 +37,12 @@ exports.login = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user)
-      return res
-        .status(401)
-        .json({
-          msg:
-            "The email address " +
-            email +
-            " is not associated with any account. Double-check your email address and try again.",
-        });
+      return res.status(401).json({
+        msg:
+          "The email address " +
+          email +
+          " is not associated with any account. Double-check your email address and try again.",
+      });
 
     //validate password
     if (!user.comparePassword(password))
@@ -55,12 +50,10 @@ exports.login = async (req, res) => {
 
     // Make sure the user has been verified
     if (!user.isVerified)
-      return res
-        .status(401)
-        .json({
-          type: "not-verified",
-          message: "Your account has not been verified.",
-        });
+      return res.status(401).json({
+        type: "not-verified",
+        message: "Your account has not been verified.",
+      });
 
     // Login successful, write token, and send back user
     res.status(200).json({ token: user.generateJWT(), user: user });
@@ -84,12 +77,10 @@ exports.verify = async (req, res) => {
     const token = await Token.findOne({ token: req.params.token });
 
     if (!token)
-      return res
-        .status(400)
-        .json({
-          message:
-            "We were unable to find a valid token. Your token my have expired.",
-        });
+      return res.status(400).json({
+        message:
+          "We were unable to find a valid token. Your token my have expired.",
+      });
 
     // If we found a token, find a matching user
     User.findOne({ _id: token.userId }, (err, user) => {
@@ -126,21 +117,17 @@ exports.resendToken = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user)
-      return res
-        .status(401)
-        .json({
-          message:
-            "The email address " +
-            req.body.email +
-            " is not associated with any account. Double-check your email address and try again.",
-        });
+      return res.status(401).json({
+        message:
+          "The email address " +
+          req.body.email +
+          " is not associated with any account. Double-check your email address and try again.",
+      });
 
     if (user.isVerified)
-      return res
-        .status(400)
-        .json({
-          message: "This account has already been verified. Please log in.",
-        });
+      return res.status(400).json({
+        message: "This account has already been verified. Please log in.",
+      });
 
     await sendVerificationEmail(user, req, res);
   } catch (error) {
@@ -164,11 +151,9 @@ async function sendVerificationEmail(user, req, res) {
 
     await sendEmail({ to, from, subject, html });
 
-    res
-      .status(200)
-      .json({
-        message: "A verification email has been sent to " + user.email + ".",
-      });
+    res.status(200).json({
+      message: "A verification email has been sent to " + user.email + ".",
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
