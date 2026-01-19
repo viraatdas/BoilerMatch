@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@babel/preset-react": "^7.12.10",
-    "@expo/webpack-config": "^0.12.53",
+    "@expo/webpack-config": "^19.0.1",
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
     "es2015": "^0.0.0",
